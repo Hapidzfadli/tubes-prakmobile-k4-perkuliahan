@@ -9,17 +9,17 @@ interface MahasiswaApiService {
     @GET("mahasiswa")
     suspend fun getAllMahasiswa(): ApiResponse<MahasiswaGetResponse>
 
-    @GET("mahasiswa/{npm}")
-    suspend fun getMahasiswaByNpm(@Path("npm") npm: String): ApiResponse<MahasiswaSingleGetResponse>
+    @GET("mahasiswa/{id}")
+    suspend fun getMahasiswaByNpm(@Path("id") id: String): ApiResponse<MahasiswaSingleGetResponse>
 
     @POST("mahasiswa")
     @Headers("Content-Type: application/json")
     suspend fun addMahasiswa(@Body mahasiswa: Mahasiswa): ApiResponse<MahasiswaSingleGetResponse>
 
-    @PUT("mahasiswa/{npm}")
+    @PUT("mahasiswa/{id}")
     @Headers("Content-Type: application/json")
-    suspend fun updateMahasiswa(@Path("npm") npm: String, @Body mahasiswa: Mahasiswa): ApiResponse<MahasiswaSingleGetResponse>
+    suspend fun updateMahasiswa(@Path("id") id: String, @Body mahasiswa: Mahasiswa): ApiResponse<MahasiswaSingleGetResponse>
 
-    @DELETE("mahasiswa/{npm}")
-    suspend fun deleteMahasiswa(@Path("npm") npm: String): ApiResponse<MahasiswaSingleGetResponse>
+    @DELETE("mahasiswa/{id}")
+    suspend fun deleteMahasiswa(@Path("id") id: String): ApiResponse<MahasiswaSingleGetResponse>
 }
