@@ -1,6 +1,6 @@
-package com.tubes.perkuliahan.k4.api
+package com.tubes.perkuliahan.k4.networks
 
-import com.tubes.perkuliahan.k4.data.model.MataKuliah
+import com.tubes.perkuliahan.k4.model.MataKuliah
 import okhttp3.ResponseBody
 import retrofit2.http.*
 

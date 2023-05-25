@@ -1,4 +1,4 @@
-package com.tubes.perkuliahan.k4.api
+package com.tubes.perkuliahan.k4.networks
 
 import com.tubes.perkuliahan.k4.data.model.Dosen
 import okhttp3.ResponseBody
