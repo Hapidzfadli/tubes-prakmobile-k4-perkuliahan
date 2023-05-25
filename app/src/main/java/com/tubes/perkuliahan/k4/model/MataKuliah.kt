@@ -1,4 +1,4 @@
-package com.tubes.perkuliahan.k4.data.model
+package com.tubes.perkuliahan.k4.model
 
 data class MataKuliah(
     val kode: String,
