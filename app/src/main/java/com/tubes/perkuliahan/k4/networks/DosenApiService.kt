@@ -1,22 +1,25 @@
 package com.tubes.perkuliahan.k4.networks
 
+import com.skydoves.sandwich.ApiResponse
 import com.tubes.perkuliahan.k4.data.model.Dosen
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface DosenApiService {
     @GET("dosen")
-    suspend fun getDosen(): List<Dosen>
+    suspend fun all(): ApiResponse<DosenGetResponse>
 
-    @GET("dosen/{nidn}")
-    suspend fun getDosenById(@Path("nidn") nidn: String): Dosen
+    @GET("dosen/{id}")
+    suspend fun find(@Path("id") id: String): ApiResponse<DosenSingleGetResponse>
 
     @POST("dosen")
-    suspend fun addDosen(@Body dosen: Dosen): ResponseBody
+    @Headers("Content-Type: application/json")
+    suspend fun insert(@Body item: Dosen): ApiResponse<DosenSingleGetResponse>
 
-    @PUT("dosen/{nidn}")
-    suspend fun updateDosen(@Path("nidn") nidn: String, @Body dosen: Dosen): ResponseBody
+    @PUT("dosen/{id}")
+    @Headers("Content-Type: application/json")
+    suspend fun update(@Path("id") pathId: String, @Body item: Dosen): ApiResponse<DosenSingleGetResponse>
 
-    @DELETE("dosen/{nidn}")
-    suspend fun deleteDosen(@Path("nidn") nidn: String): ResponseBody
+    @DELETE("dosen/{id}")
+    suspend fun delete(@Path("id") id: String): ApiResponse<DosenSingleGetResponse>
 }
