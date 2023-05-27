@@ -61,6 +61,7 @@ class DosenRepository @Inject constructor(
     }
 
     suspend fun update (
+        id: String,
         nidn: String,
         nama: String,
         gelarDepan: String,
@@ -69,7 +70,6 @@ class DosenRepository @Inject constructor(
         onSuccess: (Dosen) -> Unit,
         onError: (Dosen?, String) -> Unit
     ) {
-        val id = uuid4().toString()
         val item = Dosen(id, nidn,nama,gelarDepan, gelarBelakang,pendidikan)
         dao.insertAllDosen(item)
         api.update(id, item)

@@ -63,6 +63,7 @@ class MataKuliahRepository @Inject constructor(
     }
 
     suspend fun update (
+        id: String,
         kode: String,
         nama: String,
         sks: Byte,
@@ -71,7 +72,6 @@ class MataKuliahRepository @Inject constructor(
         onSuccess: (MataKuliah) -> Unit,
         onError: (MataKuliah?, String) -> Unit
     ) {
-        val id = uuid4().toString()
         val item = MataKuliah(id, kode, nama, sks, praktikum, deskripsi)
         dao.insertAllMataKuliah(item)
         api.updateMataKuliah(id, item)
