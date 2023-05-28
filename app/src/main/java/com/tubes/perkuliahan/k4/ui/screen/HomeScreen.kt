@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -52,8 +53,6 @@ import java.util.*
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier) {
-    val dosenScope = rememberCoroutineScope()
-    val mahasiswaScope = rememberCoroutineScope()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val dosenViewModel = hiltViewModel<DosenViewModel>()
@@ -115,28 +114,22 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
             )
         }
     }
-
-    LaunchedEffect(dosenScope) {
-        dosenViewModel.loadItems()
-
-    }
-    LaunchedEffect(mahasiswaScope) {
-        mahasiswaViewModel.loadItems()
-    }
     LaunchedEffect(scope) {
+        mahasiswaViewModel.loadItems()
+        dosenViewModel.loadItems()
         mataKuliahViewModel.loadItems()
     }
 
     dosenViewModel.success.observe(LocalLifecycleOwner.current) {
         if (it) {
-            dosenScope.launch {
+            scope.launch {
                 dosenViewModel.loadItems()
             }
         }
     }
     mahasiswaViewModel.success.observe(LocalLifecycleOwner.current) {
         if (it) {
-            mahasiswaScope.launch {
+            scope.launch {
                 mahasiswaViewModel.loadItems()
             }
         }

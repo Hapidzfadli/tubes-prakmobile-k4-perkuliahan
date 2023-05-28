@@ -37,7 +37,7 @@ fun BottomMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.Transparent)
+            .background(Color.White)
             .padding(15.dp)
     ) {
         items.forEachIndexed { index, item ->

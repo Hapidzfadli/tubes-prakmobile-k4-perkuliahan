@@ -8,6 +8,7 @@ import retrofit2.http.*
 interface MataKuliahApiService {
     @GET("matakuliah")
     suspend fun getAllMataKuliah(): ApiResponse<MataKuliahGetResponse>
+
     @GET("matakuliah/{id}")
     suspend fun getMataKuliahByKode(@Path("id") id: String): ApiResponse<MataKuliahSingleGetResponse>
 
