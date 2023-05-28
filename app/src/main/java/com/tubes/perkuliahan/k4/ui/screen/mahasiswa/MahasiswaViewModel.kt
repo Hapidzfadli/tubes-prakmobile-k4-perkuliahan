@@ -3,8 +3,8 @@ package com.tubes.perkuliahan.k4.ui.screen.mahasiswa
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tubes.perkuliahan.k4.data.model.JenisKelamin
-import com.tubes.perkuliahan.k4.data.model.Mahasiswa
+import com.tubes.perkuliahan.k4.model.JenisKelamin
+import com.tubes.perkuliahan.k4.model.Mahasiswa
 import com.tubes.perkuliahan.k4.repository.MahasiswaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*

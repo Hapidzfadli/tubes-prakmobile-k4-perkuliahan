@@ -3,27 +3,25 @@ package com.tubes.perkuliahan.k4.ui.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.tubes.perkuliahan.k4.R
+import com.tubes.perkuliahan.k4.model.BottomMenuContent
 import com.tubes.perkuliahan.k4.model.MenuItem
-import com.tubes.perkuliahan.k4.ui.theme.TextBlack
 import com.tubes.perkuliahan.k4.ui.utils.AppBar
+import com.tubes.perkuliahan.k4.ui.utils.BottomMenu
 import com.tubes.perkuliahan.k4.ui.utils.DrawerBody
 import com.tubes.perkuliahan.k4.ui.utils.DrawerHeader
 import kotlinx.coroutines.launch
+import androidx.compose.ui.Alignment
 
 @Composable
 fun MainScreen () {
@@ -83,6 +81,15 @@ fun MainScreen () {
                     println("Clicked on ${it.title}")
                 }
             )
+        },
+        bottomBar = {
+            BottomMenu(items = listOf(
+                BottomMenuContent("Home", R.drawable.home),
+                BottomMenuContent("Dosen", R.drawable.teacher),
+                BottomMenuContent("Mahasiswa", R.drawable.graduated),
+                BottomMenuContent("Matkul", R.drawable.matkul),
+
+            ), )
         }
     )
     { innerPadding ->

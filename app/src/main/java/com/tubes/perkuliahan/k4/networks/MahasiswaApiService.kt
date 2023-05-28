@@ -1,8 +1,7 @@
 package com.tubes.perkuliahan.k4.networks
 
 import com.skydoves.sandwich.ApiResponse
-import com.tubes.perkuliahan.k4.data.model.Mahasiswa
-import okhttp3.ResponseBody
+import com.tubes.perkuliahan.k4.model.Mahasiswa
 import retrofit2.http.*
 
 interface MahasiswaApiService {
