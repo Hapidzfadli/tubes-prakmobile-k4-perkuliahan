@@ -13,11 +13,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,23 +25,50 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tubes.perkuliahan.k4.R
+import com.tubes.perkuliahan.k4.data.model.Dosen
+import com.tubes.perkuliahan.k4.model.Mahasiswa
 import com.tubes.perkuliahan.k4.model.Feature
+import com.tubes.perkuliahan.k4.model.MataKuliah
+import com.tubes.perkuliahan.k4.ui.screen.dosen.DosenViewModel
+import com.tubes.perkuliahan.k4.ui.screen.mahasiswa.MahasiswaViewModel
+import com.tubes.perkuliahan.k4.ui.screen.matakuliah.MataKuliahViewModel
 import com.tubes.perkuliahan.k4.ui.theme.*
 import com.tubes.perkuliahan.k4.ui.utils.standardQuadFromTo
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier) {
+    val dosenScope = rememberCoroutineScope()
+    val mahasiswaScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val dosenViewModel = hiltViewModel<DosenViewModel>()
+    val dosenItems: List<Dosen> by dosenViewModel.list.observeAsState(initial =
+    listOf())
+
+    val mahasiswaViewModel = hiltViewModel<MahasiswaViewModel>()
+    val mahasiswaItems: List<Mahasiswa> by mahasiswaViewModel.list.observeAsState(initial =
+    listOf())
+
+    val mataKuliahViewModel = hiltViewModel<MataKuliahViewModel>()
+    val mataKuliahItems: List<MataKuliah> by mataKuliahViewModel.list.observeAsState(initial =
+    listOf())
+
+    val perkuliahan : Int = (dosenItems?.size ?: 0) + (mahasiswaItems?.size ?: 0) + (mataKuliahItems?.size ?: 0)
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -58,7 +85,7 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
                         BlueViolet1,
                         BlueViolet2,
                         BlueViolet3,
-                        12
+                        dosenItems?.size ?: 0
                     ),
                     Feature(
                         title = "Mahasiswa",
@@ -66,7 +93,7 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
                         LightGreen1,
                         LightGreen2,
                         LightGreen3,
-                        36
+                        mahasiswaItems?.size ?: 0
                     ),
                     Feature(
                         title = "Mata Kuliah",
@@ -74,20 +101,54 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
                         OrangeYellow1,
                         OrangeYellow2,
                         OrangeYellow3,
-                        8
+                        mataKuliahItems?.size ?: 0
                     ),
                     Feature(
-                        title = "More",
-                        R.drawable.matkul,
+                        title = "Total",
+                        R.drawable.symbol,
                         Beige1,
                         Beige2,
                         Beige3,
-                        50
+                        perkuliahan
                     )
                 )
             )
         }
     }
+
+    LaunchedEffect(dosenScope) {
+        dosenViewModel.loadItems()
+
+    }
+    LaunchedEffect(mahasiswaScope) {
+        mahasiswaViewModel.loadItems()
+    }
+    LaunchedEffect(scope) {
+        mataKuliahViewModel.loadItems()
+    }
+
+    dosenViewModel.success.observe(LocalLifecycleOwner.current) {
+        if (it) {
+            dosenScope.launch {
+                dosenViewModel.loadItems()
+            }
+        }
+    }
+    mahasiswaViewModel.success.observe(LocalLifecycleOwner.current) {
+        if (it) {
+            mahasiswaScope.launch {
+                mahasiswaViewModel.loadItems()
+            }
+        }
+    }
+    mataKuliahViewModel.success.observe(LocalLifecycleOwner.current) {
+        if (it) {
+            scope.launch {
+                mataKuliahViewModel.loadItems()
+            }
+        }
+    }
+
 }
 
 @Composable

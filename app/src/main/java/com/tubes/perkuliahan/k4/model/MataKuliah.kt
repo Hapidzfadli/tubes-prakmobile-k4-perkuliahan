@@ -1,14 +1,16 @@
 package com.tubes.perkuliahan.k4.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity
 data class MataKuliah(
     @PrimaryKey val id: String,
     val kode: String,
     val nama: String,
-    val sks: Byte,
-    val praktikum: Boolean,
-    val deskripsi: String
+    @ColumnInfo(name = "sks", defaultValue = "2") val sks: Byte,
+    @ColumnInfo(name = "praktikum", defaultValue = "false") val praktikum: Boolean,
+    @ColumnInfo(name = "deskripsi", defaultValue = "matkul") val deskripsi: String,
 )

@@ -3,7 +3,7 @@ package com.tubes.perkuliahan.k4.persistance
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.tubes.perkuliahan.k4.data.model.Dosen
-import com.tubes.perkuliahan.k4.data.model.Mahasiswa
+import com.tubes.perkuliahan.k4.model.Mahasiswa
 import com.tubes.perkuliahan.k4.model.MataKuliah
 
 @Dao
