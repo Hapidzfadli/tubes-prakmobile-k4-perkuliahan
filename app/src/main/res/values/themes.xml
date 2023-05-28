@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.Perkuliahan" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">#47A992</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>
