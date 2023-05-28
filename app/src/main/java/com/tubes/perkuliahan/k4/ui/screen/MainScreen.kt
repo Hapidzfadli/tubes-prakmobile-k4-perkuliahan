@@ -23,6 +23,8 @@ import com.tubes.perkuliahan.k4.ui.utils.DrawerHeader
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import com.tubes.perkuliahan.k4.ui.screen.dosen.DosenScreen
+import com.tubes.perkuliahan.k4.ui.screen.mahasiswa.MahasiswaScreen
+import com.tubes.perkuliahan.k4.ui.screen.matakuliah.MataKuliahScreen
 
 @Composable
 fun MainScreen () {
@@ -107,6 +109,18 @@ fun MainScreen () {
             }
             composable("dosen") {
                 DosenScreen(navController = navController, Modifier.padding(innerPadding))
+            }
+            composable("mahasiswa") {
+                MahasiswaScreen(navController = navController, Modifier.padding(innerPadding))
+            }
+            composable("matkul") {
+                MataKuliahScreen(navController = navController, Modifier.padding(innerPadding))
+            }
+            composable("all") {
+                AllScreen()
+            }
+            composable("credit") {
+                CreditScren()
             }
         }
 

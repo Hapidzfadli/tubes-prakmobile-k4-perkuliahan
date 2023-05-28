@@ -53,7 +53,10 @@ fun BottomMenu(
                 inactiveTextColor = inactiveTextColor
             ) {
                 selectedItemIndex = index
-                navController.navigate(item.id)
+                val currentRoute = navController.currentBackStackEntry?.destination?.route
+                if (currentRoute != item.id) {
+                    navController.navigate(item.id)
+                }
             }
         }
     }

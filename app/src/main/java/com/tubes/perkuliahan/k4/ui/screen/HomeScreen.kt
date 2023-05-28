@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.tubes.perkuliahan.k4.R
 import com.tubes.perkuliahan.k4.data.model.Dosen
@@ -76,9 +77,10 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
         Column {
             GreetingSection ()
             CurrentDateTime()
-            FeatureSection(
+            FeatureSection(navController = navController,
                 features = listOf(
                     Feature(
+                        id = "dosen",
                         title = "Dosen",
                         R.drawable.teacher,
                         BlueViolet1,
@@ -87,6 +89,7 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
                         dosenItems?.size ?: 0
                     ),
                     Feature(
+                        id = "mahasiswa",
                         title = "Mahasiswa",
                         R.drawable.graduated,
                         LightGreen1,
@@ -95,6 +98,7 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
                         mahasiswaItems?.size ?: 0
                     ),
                     Feature(
+                        id = "matkul",
                         title = "Mata Kuliah",
                         R.drawable.matkul,
                         OrangeYellow1,
@@ -103,6 +107,7 @@ fun HomeScreen(navController : NavHostController, modifier: Modifier = Modifier)
                         mataKuliahItems?.size ?: 0
                     ),
                     Feature(
+                        id = "all",
                         title = "Total",
                         R.drawable.symbol,
                         Beige1,
@@ -221,7 +226,7 @@ fun CurrentDateTime() {
 
 @ExperimentalFoundationApi
 @Composable
-fun FeatureSection(features: List<Feature>) {
+fun FeatureSection(features: List<Feature>, navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "Dashboard",
@@ -234,7 +239,7 @@ fun FeatureSection(features: List<Feature>) {
             modifier = Modifier.fillMaxHeight()
         ) {
             items(features.size) {
-                FeatureItem(feature = features[it])
+                FeatureItem(feature = features[it], navController = navController)
             }
         }
     }
@@ -242,7 +247,8 @@ fun FeatureSection(features: List<Feature>) {
 
 @Composable
 fun FeatureItem(
-    feature: Feature
+    feature: Feature,
+    navController: NavController,
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -335,7 +341,10 @@ fun FeatureItem(
                 ),
                 modifier = Modifier
                     .clickable {
-                        // Handle the click
+                        val currentRoute = navController.currentBackStackEntry?.destination?.route
+                        if (currentRoute != feature.id) {
+                            navController.navigate(feature.id)
+                        }
                     }
                     .align(Alignment.BottomEnd)
                     .clip(RoundedCornerShape(10.dp))
