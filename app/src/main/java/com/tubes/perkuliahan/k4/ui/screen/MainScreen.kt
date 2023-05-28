@@ -22,6 +22,7 @@ import com.tubes.perkuliahan.k4.ui.utils.DrawerBody
 import com.tubes.perkuliahan.k4.ui.utils.DrawerHeader
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
+import com.tubes.perkuliahan.k4.ui.screen.dosen.DosenScreen
 
 @Composable
 fun MainScreen () {
@@ -78,18 +79,21 @@ fun MainScreen () {
 
                 ),
                 onItemClick = {
-                    println("Clicked on ${it.title}")
+                    val currentRoute = navController.currentBackStackEntry?.destination?.route
+                    if (currentRoute != it.id) {
+                        navController.navigate(it.id)
+                    }
                 }
             )
         },
         bottomBar = {
             BottomMenu(items = listOf(
-                BottomMenuContent("Home", R.drawable.home),
-                BottomMenuContent("Dosen", R.drawable.teacher),
-                BottomMenuContent("Mahasiswa", R.drawable.graduated),
-                BottomMenuContent("Matkul", R.drawable.matkul),
+                BottomMenuContent("home","Home", R.drawable.home),
+                BottomMenuContent("dosen","Dosen", R.drawable.teacher),
+                BottomMenuContent("mahasiswa","Mahasiswa", R.drawable.graduated),
+                BottomMenuContent("matkul","Matkul", R.drawable.matkul),
 
-            ), )
+            ), navController = navController)
         }
     )
     { innerPadding ->
@@ -100,6 +104,9 @@ fun MainScreen () {
                 HomeScreen(navController =
                 navController, modifier =
                 Modifier.padding(innerPadding))
+            }
+            composable("dosen") {
+                DosenScreen(navController = navController, Modifier.padding(innerPadding))
             }
         }
 
