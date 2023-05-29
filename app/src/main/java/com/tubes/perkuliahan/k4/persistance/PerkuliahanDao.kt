@@ -28,7 +28,7 @@ interface PerkuliahanDao {
     fun deleteDosen(item: Dosen)
 
     @Query("DELETE FROM Dosen WHERE id = :id")
-    fun deleteDosen(id: String)
+    suspend fun deleteDosen(id: String)
 
     // DAO untuk entitas Mahasiswa
     @Query("SELECT * FROM Mahasiswa ORDER BY nama")
@@ -50,7 +50,7 @@ interface PerkuliahanDao {
     fun deleteMahasiswa(item: Mahasiswa)
 
     @Query("DELETE FROM Mahasiswa WHERE id = :id")
-    fun deleteMahasiswa(id: String)
+    suspend fun deleteMahasiswa(id: String)
 
     // DAO untuk entitas MataKuliah
     @Query("SELECT * FROM MataKuliah ORDER BY nama")
@@ -72,5 +72,5 @@ interface PerkuliahanDao {
     fun deleteMataKuliah(item: MataKuliah)
 
     @Query("DELETE FROM MataKuliah WHERE id = :id")
-    fun deleteMataKuliah(id: String)
+    suspend fun deleteMataKuliah(id: String)
 }
