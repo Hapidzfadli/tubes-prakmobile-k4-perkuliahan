@@ -24,7 +24,10 @@ import com.tubes.perkuliahan.k4.ui.utils.DrawerBody
 import com.tubes.perkuliahan.k4.ui.utils.DrawerHeader
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.tubes.perkuliahan.k4.ui.screen.dosen.DosenScreen
+import com.tubes.perkuliahan.k4.ui.screen.dosen.FormDosen
 import com.tubes.perkuliahan.k4.ui.screen.mahasiswa.MahasiswaScreen
 import com.tubes.perkuliahan.k4.ui.screen.matakuliah.MataKuliahScreen
 
@@ -116,6 +119,21 @@ fun MainScreen () {
                 title.value = "Dosen"
                 DosenScreen(navController = navController, Modifier.padding(innerPadding))
             }
+            composable("edit-dosen/{id}",
+                listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    }
+                )){ backStackEntry ->
+                title.value = "Edit Data Dosen"
+                val id =
+                    backStackEntry.arguments?.getString("id")
+                        ?: return@composable
+                FormDosen(navController =
+                navController, id = id, modifier =
+                Modifier.padding(innerPadding))
+            }
+
             composable("mahasiswa") {
                 title.value = "Mahasiswa"
                 MahasiswaScreen(navController = navController, Modifier.padding(innerPadding))

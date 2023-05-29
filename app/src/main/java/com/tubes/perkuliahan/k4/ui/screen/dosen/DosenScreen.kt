@@ -77,7 +77,9 @@ fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .background(BlueViolet3)
                         .fillMaxWidth()
-                        .clickable {   }
+                        .clickable {
+                            navController.navigate("edit-dosen/${item.id}")
+                        }
                 ){
                     val width = constraints.maxWidth
                     val height = constraints.maxHeight
@@ -166,27 +168,22 @@ fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier
                             )
                         }
                     }
-//                    Image(
-//                        painter = painterResource(id = R.drawable.close), // Ganti dengan resource avatar Anda
-//                        contentDescription = "Delete",
-//                        modifier = Modifier.align(Alignment.TopEnd).size(20.dp)
-//                            .clickable {  }
-//
-//                    )
                     Row(modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(8.dp)){
 
                         Image(
-                            painter = painterResource(id = R.drawable.edit), // Ganti dengan resource avatar Anda
+                            painter = painterResource(id = R.drawable.edit),
                             contentDescription = "Edit",
                             modifier = Modifier
                                 .size(20.dp)
-                                .clickable {  }
+                                .clickable {
+                                    navController.navigate("edit-dosen/${item.id}")
+                                }
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Image(
-                            painter = painterResource(id = R.drawable.delete), // Ganti dengan resource avatar Anda
+                            painter = painterResource(id = R.drawable.delete),
                             contentDescription = "Delete",
                             modifier = Modifier
                                 .size(20.dp)
