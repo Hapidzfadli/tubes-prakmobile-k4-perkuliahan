@@ -11,8 +11,8 @@ data class Mahasiswa(
     @PrimaryKey val id: String,
     val npm: String,
     val nama: String,
-    @ColumnInfo(name = "tanggalLahir", defaultValue = "20020121") val tanggalLahir: Date ,
-    @ColumnInfo(name = "jenisKelamin", defaultValue = "LAKI_LAKI") val jenisKelamin: JenisKelamin ,
+    val tanggal_lahir: Date ,
+    @ColumnInfo(name = "jenis_kelamin", defaultValue = "LAKI_LAKI") var jenis_kelamin: JenisKelamin,
 )
 
 enum class JenisKelamin {

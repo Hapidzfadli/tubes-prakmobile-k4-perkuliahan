@@ -8,6 +8,8 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
@@ -31,6 +33,7 @@ fun MainScreen () {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val title = remember { mutableStateOf("") }
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -39,7 +42,8 @@ fun MainScreen () {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
-                }
+                },
+                title = title.value
             )
         },
 
@@ -103,23 +107,29 @@ fun MainScreen () {
         horizontalAlignment = Alignment.CenterHorizontally) {
         NavHost(navController = navController, startDestination = "home") {
             composable("home") {
+                title.value = "Perkulihan"
                 HomeScreen(navController =
                 navController, modifier =
                 Modifier.padding(innerPadding))
             }
             composable("dosen") {
+                title.value = "Dosen"
                 DosenScreen(navController = navController, Modifier.padding(innerPadding))
             }
             composable("mahasiswa") {
+                title.value = "Mahasiswa"
                 MahasiswaScreen(navController = navController, Modifier.padding(innerPadding))
             }
             composable("matkul") {
+                title.value = "Mata Kuliah"
                 MataKuliahScreen(navController = navController, Modifier.padding(innerPadding))
             }
             composable("all") {
+                title.value = "All"
                 AllScreen()
             }
             composable("credit") {
+                title.value = "Credit"
                 CreditScren()
             }
         }
