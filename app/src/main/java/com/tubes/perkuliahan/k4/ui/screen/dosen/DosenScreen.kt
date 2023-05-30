@@ -69,8 +69,6 @@ fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier
                     }
             )
         }
-
-        //menampilkan item dosen
         LazyColumn(modifier = Modifier.fillMaxWidth()){
             items(items = dosenItems, itemContent = { item ->
                 BoxWithConstraints(
@@ -195,13 +193,13 @@ fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier
                                     showDialog = true
                                 }
                         )
+                        // Dialog
+
                     }
                 }
 
             })
         }
-
-        //menambahkan fitur show dialog
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
