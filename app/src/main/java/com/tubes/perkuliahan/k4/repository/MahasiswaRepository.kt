@@ -44,7 +44,7 @@ class MahasiswaRepository @Inject constructor(
         npm: String,
         nama: String,
         tanggal_lahir: Date,
-        jenis_kelamin: JenisKelamin,
+        jenis_kelamin: String,
         onSuccess: (Mahasiswa) -> Unit,
         onError: (Mahasiswa?, String) -> Unit
     ) {
@@ -68,7 +68,7 @@ class MahasiswaRepository @Inject constructor(
         npm: String,
         nama: String,
         tanggal_lahir: Date,
-        jenis_kelamin: JenisKelamin,
+        jenis_kelamin: String,
         onSuccess: (Mahasiswa) -> Unit,
         onError: (Mahasiswa?, String) -> Unit
     ) {

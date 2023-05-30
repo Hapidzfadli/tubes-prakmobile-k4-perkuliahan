@@ -3,7 +3,6 @@ package com.tubes.perkuliahan.k4.ui.screen.mahasiswa
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tubes.perkuliahan.k4.model.JenisKelamin
 import com.tubes.perkuliahan.k4.model.Mahasiswa
 import com.tubes.perkuliahan.k4.repository.MahasiswaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,7 +39,7 @@ class MahasiswaViewModel @Inject constructor(
         npm: String,
         nama: String,
         tanggalLahir: Date,
-        jenisKelamin: JenisKelamin,
+        jenisKelamin: String,
     )
     {
         _isLoading.postValue(true)
@@ -64,7 +63,7 @@ class MahasiswaViewModel @Inject constructor(
         npm: String,
         nama: String,
         tanggalLahir: Date,
-        jenisKelamin: JenisKelamin,
+        jenisKelamin: String,
     )
     {
         _isLoading.postValue(true)

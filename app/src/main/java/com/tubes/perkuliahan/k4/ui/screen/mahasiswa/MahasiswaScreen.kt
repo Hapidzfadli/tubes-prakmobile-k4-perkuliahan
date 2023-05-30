@@ -139,11 +139,20 @@ fun MahasiswaScreen(navController : NavHostController, modifier: Modifier = Modi
                         )
                     }
                     Row(modifier = Modifier.padding(15.dp)){
-                        Image(
-                            painter = painterResource(id = R.drawable.man), // Ganti dengan resource avatar Anda
-                            contentDescription = "Avatar",
-                            modifier = Modifier.size(64.dp)
-                        )
+
+                        if(item.jenis_kelamin == "Perempuan") {
+                            Image(
+                                painter = painterResource(id = R.drawable.woman), // Ganti dengan resource avatar Anda
+                                contentDescription = "Avatar",
+                                modifier = Modifier.size(64.dp)
+                            )
+                        } else if (item.jenis_kelamin == "Laki-laki"){
+                            Image(
+                                painter = painterResource(id = R.drawable.man), // Ganti dengan resource avatar Anda
+                                contentDescription = "Avatar",
+                                modifier = Modifier.size(64.dp)
+                            )
+                        }
                         Column(modifier = Modifier.padding(horizontal = 15.dp)){
                             Text(
                                 text = item.nama,

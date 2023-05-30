@@ -12,10 +12,11 @@ data class Mahasiswa(
     val npm: String,
     val nama: String,
     val tanggal_lahir: Date ,
-    @ColumnInfo(name = "jenis_kelamin", defaultValue = "LAKI_LAKI") var jenis_kelamin: JenisKelamin,
+    val jenis_kelamin: String,
 )
 
-enum class JenisKelamin {
-    LAKI_LAKI,
-    PEREMPUAN
+enum class JenisKelamin(var value: String) {
+    PEREMPUAN("Perempuan"),
+    LAKI_LAKI("Laki-laki")
 }
+

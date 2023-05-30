@@ -14,3 +14,8 @@ data class MataKuliah(
     val praktikum: Int,
     val deskripsi: String,
 )
+
+enum class Praktikum(var value: Int) {
+    PRAKTIKUM(1),
+    BUKAN_PRAKTIKUM(0)
+}

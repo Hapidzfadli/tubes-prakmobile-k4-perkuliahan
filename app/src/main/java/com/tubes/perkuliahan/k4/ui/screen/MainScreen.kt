@@ -28,7 +28,9 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.tubes.perkuliahan.k4.ui.screen.dosen.DosenScreen
 import com.tubes.perkuliahan.k4.ui.screen.dosen.FormDosen
+import com.tubes.perkuliahan.k4.ui.screen.mahasiswa.FormMahasiswa
 import com.tubes.perkuliahan.k4.ui.screen.mahasiswa.MahasiswaScreen
+import com.tubes.perkuliahan.k4.ui.screen.matakuliah.FormMataKuliah
 import com.tubes.perkuliahan.k4.ui.screen.matakuliah.MataKuliahScreen
 
 @Composable
@@ -150,13 +152,13 @@ fun MainScreen () {
                 val id =
                     backStackEntry.arguments?.getString("id")
                         ?: return@composable
-                FormDosen(navController =
+                FormMahasiswa(navController =
                 navController, id = id, modifier =
                 Modifier.padding(innerPadding))
             }
             composable("tambah-mahasiswa") {
                 title.value = "Tambah Data Mahasiswa"
-                FormDosen(navController =
+                FormMahasiswa(navController =
                 navController, modifier =
                 Modifier.padding(innerPadding))
             }
@@ -169,13 +171,38 @@ fun MainScreen () {
                 title.value = "Mata Kuliah"
                 MataKuliahScreen(navController = navController, Modifier.padding(innerPadding))
             }
+
+            composable("edit-matakuliah/{id}",
+                listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    }
+                )){ backStackEntry ->
+                title.value = "Edit Data Mata Kuliah"
+                val id =
+                    backStackEntry.arguments?.getString("id")
+                        ?: return@composable
+                FormMataKuliah(navController =
+                navController, id = id, modifier =
+                Modifier.padding(innerPadding))
+            }
+            composable("tambah-matakuliah") {
+                title.value = "Tambah Data Mata Kuliah"
+                FormMataKuliah(navController =
+                navController, modifier =
+                Modifier.padding(innerPadding))
+            }
             composable("all") {
                 title.value = "All"
-                AllScreen()
+                AllScreen(navController =
+                navController, modifier =
+                Modifier.padding(innerPadding))
             }
             composable("credit") {
                 title.value = "Credit"
-                CreditScren()
+                CreditScren(navController =
+                navController, modifier =
+                Modifier.padding(innerPadding))
             }
         }
 
