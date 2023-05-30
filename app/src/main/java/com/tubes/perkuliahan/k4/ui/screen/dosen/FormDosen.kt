@@ -46,6 +46,7 @@ fun FormDosen(navController: NavController, id: String? = null, modifier: Modifi
     var pendidikan by remember { mutableStateOf(Pendidikan.S2) }
     val scope = rememberCoroutineScope()
 
+    // menampilkan inputan
     Column(
         modifier = Modifier.fillMaxWidth().padding(15.dp)
     ){
@@ -182,6 +183,8 @@ fun FormDosen(navController: NavController, id: String? = null, modifier: Modifi
                     onValueSelected = { selectedPendidikan -> pendidikan = selectedPendidikan }
                 )
             }
+
+            //menambah button save
             item {
                 Button(modifier = Modifier.padding(10.dp), onClick = {
                     if (id == null) {
@@ -225,6 +228,7 @@ fun FormDosen(navController: NavController, id: String? = null, modifier: Modifi
         isLoading.value = it
     }
 
+    //mengecek edit atau tambah
     if (id != null) {
         LaunchedEffect(scope) {
             viewModel.loadItem(id) { dosen ->
@@ -241,6 +245,7 @@ fun FormDosen(navController: NavController, id: String? = null, modifier: Modifi
 }
 
 
+//menambahkan Radio Button
 @Composable
 fun EnumRadioGroup(
     selectedValue: Pendidikan,
