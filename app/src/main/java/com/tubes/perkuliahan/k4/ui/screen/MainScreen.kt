@@ -140,6 +140,27 @@ fun MainScreen () {
                 Modifier.padding(innerPadding))
             }
 
+            composable("edit-mahasiswa/{id}",
+                listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    }
+                )){ backStackEntry ->
+                title.value = "Edit Data Mahasiswa"
+                val id =
+                    backStackEntry.arguments?.getString("id")
+                        ?: return@composable
+                FormDosen(navController =
+                navController, id = id, modifier =
+                Modifier.padding(innerPadding))
+            }
+            composable("tambah-mahasiswa") {
+                title.value = "Tambah Data Mahasiswa"
+                FormDosen(navController =
+                navController, modifier =
+                Modifier.padding(innerPadding))
+            }
+
             composable("mahasiswa") {
                 title.value = "Mahasiswa"
                 MahasiswaScreen(navController = navController, Modifier.padding(innerPadding))
