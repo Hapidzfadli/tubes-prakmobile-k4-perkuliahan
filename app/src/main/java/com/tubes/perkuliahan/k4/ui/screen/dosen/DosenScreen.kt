@@ -41,6 +41,7 @@ import com.tubes.perkuliahan.k4.ui.utils.standardQuadFromTo
 fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier){
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    var id by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val dosenViewModel = hiltViewModel<DosenViewModel>()
     val dosenItems: List<Dosen> by dosenViewModel.list.observeAsState(initial =
@@ -58,14 +59,14 @@ fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier
                 text = "Daftar Dosen",
                 style = MaterialTheme.typography.h2
             )
-            Icon(
-                Icons.Default.List,
-                contentDescription = "Filter",
-                modifier = Modifier.size(24.dp)
-                    .clickable(onClick = {  },
-                        role = Role.Button
-                    ),
-                tint = TextBlack,
+            Image(
+                painter = painterResource(id = R.drawable.plus),
+                contentDescription = "Plus",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable {
+                        navController.navigate("tambah-dosen")
+                    }
             )
         }
         LazyColumn(modifier = Modifier.fillMaxWidth()){
@@ -188,74 +189,76 @@ fun DosenScreen(navController : NavHostController, modifier: Modifier = Modifier
                             modifier = Modifier
                                 .size(20.dp)
                                 .clickable {
+                                    id = item.id
                                     showDialog = true
                                 }
                         )
                         // Dialog
-                        if (showDialog) {
-                            AlertDialog(
-                                onDismissRequest = { showDialog = false },
-                                title = { Text(
-                                    text = "Konfirmasi",
-                                    style = TextStyle(
-                                        color = TextBlack,
-                                        fontFamily = poppins,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 16.sp
-                                    )
-                                ) },
-                                text = { Text(
-                                    text = "Apakah Anda yakin ingin menghapus?",
-                                    style = TextStyle(
-                                        color = TextBlack,
-                                        fontFamily = poppins,
-                                        fontWeight = FontWeight.Normal,
-                                        fontSize = 14.sp
-                                    )
-                                ) },
-                                confirmButton = {
-                                    Button(
-                                        onClick = {
-                                            scope.launch {
-                                                dosenViewModel.delete(item.id)
-                                            }
-                                            showDialog = false
-                                        }
-                                    ) {
-                                        Text(
-                                            text = "Ya",
-                                            style = TextStyle(
-                                                color = Color.White,
-                                                fontFamily = poppins,
-                                                fontWeight = FontWeight.Normal,
-                                                fontSize = 14.sp
-                                            )
-                                        )
-                                    }
-                                },
-                                dismissButton = {
-                                    Button(
-                                        onClick = {
-                                            showDialog = false
-                                        }
-                                    ) {
-                                        Text(
-                                            text = "Tidak",
-                                            style = TextStyle(
-                                                color = Color.White,
-                                                fontFamily = poppins,
-                                                fontWeight = FontWeight.Normal,
-                                                fontSize = 14.sp
-                                            )
-                                        )
-                                    }
-                                }
-                            )
-                        }
+
                     }
                 }
 
             })
+        }
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text(
+                    text = "Konfirmasi",
+                    style = TextStyle(
+                        color = TextBlack,
+                        fontFamily = poppins,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                ) },
+                text = { Text(
+                    text = "Apakah Anda yakin ingin menghapus?",
+                    style = TextStyle(
+                        color = TextBlack,
+                        fontFamily = poppins,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp
+                    )
+                ) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                dosenViewModel.delete(id)
+                            }
+                            showDialog = false
+                        }
+                    ) {
+                        Text(
+                            text = "Ya",
+                            style = TextStyle(
+                                color = Color.White,
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp
+                            )
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            showDialog = false
+                        }
+                    ) {
+                        Text(
+                            text = "Tidak",
+                            style = TextStyle(
+                                color = Color.White,
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp
+                            )
+                        )
+                    }
+                }
+            )
         }
     }
 

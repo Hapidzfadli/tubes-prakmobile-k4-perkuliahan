@@ -133,6 +133,12 @@ fun MainScreen () {
                 navController, id = id, modifier =
                 Modifier.padding(innerPadding))
             }
+            composable("tambah-dosen") {
+                title.value = "Tambah Data Dosen"
+                FormDosen(navController =
+                navController, modifier =
+                Modifier.padding(innerPadding))
+            }
 
             composable("mahasiswa") {
                 title.value = "Mahasiswa"
