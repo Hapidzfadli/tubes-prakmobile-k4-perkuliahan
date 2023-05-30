@@ -28,3 +28,4 @@ val BlueViolet3 = Color(0xff8f98fd)
 
 val BlueDate = Color(0xFF00C4FF)
 val Grey = Color(0xFFC4DFDF)
+val WhiteTwo = Color(0xFFF8E8EE)

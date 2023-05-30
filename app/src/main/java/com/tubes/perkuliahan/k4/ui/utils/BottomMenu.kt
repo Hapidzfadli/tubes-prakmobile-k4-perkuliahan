@@ -17,6 +17,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.tubes.perkuliahan.k4.model.BottomMenuContent
 import com.tubes.perkuliahan.k4.ui.theme.*
 
@@ -24,6 +26,7 @@ import com.tubes.perkuliahan.k4.ui.theme.*
 fun BottomMenu(
     items: List<BottomMenuContent>,
     modifier: Modifier = Modifier,
+    navController: NavController,
     activeHighlightColor: Color = Grey,
     activeTextColor: Color = Color.DarkGray,
     inactiveTextColor: Color = TextBlack,
@@ -32,13 +35,14 @@ fun BottomMenu(
     var selectedItemIndex by remember {
         mutableStateOf(initialSelectedItemIndex)
     }
+
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.Transparent)
-            .padding(15.dp)
+            .background(Color.White)
+            .padding(horizontal = 15.dp)
     ) {
         items.forEachIndexed { index, item ->
             BottomMenuItem(
@@ -49,6 +53,10 @@ fun BottomMenu(
                 inactiveTextColor = inactiveTextColor
             ) {
                 selectedItemIndex = index
+                val currentRoute = navController.currentBackStackEntry?.destination?.route
+                if (currentRoute != item.id) {
+                    navController.navigate(item.id)
+                }
             }
         }
     }

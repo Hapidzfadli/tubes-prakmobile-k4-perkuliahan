@@ -26,6 +26,7 @@ import com.tubes.perkuliahan.k4.ui.theme.poppins
 
 @Composable
 fun AppBar(
+    title : String,
     onNavigationIconClick: () -> Unit
 ) {
     TopAppBar(
@@ -48,7 +49,7 @@ fun AppBar(
             }
             Spacer(modifier = Modifier.weight(0.6f))
             Text(
-                text = "Perkuliahan",
+                text = title,
                 style = TextStyle(
                     color = TextBlack,
                     fontFamily = poppins,

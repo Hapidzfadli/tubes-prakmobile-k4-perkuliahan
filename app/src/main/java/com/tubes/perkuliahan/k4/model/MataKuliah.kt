@@ -10,7 +10,7 @@ data class MataKuliah(
     @PrimaryKey val id: String,
     val kode: String,
     val nama: String,
-    @ColumnInfo(name = "sks", defaultValue = "2") val sks: Byte,
-    @ColumnInfo(name = "praktikum", defaultValue = "false") val praktikum: Boolean,
-    @ColumnInfo(name = "deskripsi", defaultValue = "matkul") val deskripsi: String,
+    val sks: Byte,
+    val praktikum: Int,
+    val deskripsi: String,
 )

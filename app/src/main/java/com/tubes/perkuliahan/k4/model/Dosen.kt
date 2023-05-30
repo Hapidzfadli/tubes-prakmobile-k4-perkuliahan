@@ -9,8 +9,8 @@ data class Dosen(
     @PrimaryKey val id: String,
     val nidn: String,
     val nama: String,
-    @ColumnInfo(name = "gelarDepan", defaultValue = "") val gelarDepan: String,
-    @ColumnInfo(name = "gelarBelakang", defaultValue = "") val gelarBelakang: String,
+    val gelar_depan: String,
+    val gelar_belakang: String,
     val pendidikan: Pendidikan
 )
 

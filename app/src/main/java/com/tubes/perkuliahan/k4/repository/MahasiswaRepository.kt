@@ -43,13 +43,13 @@ class MahasiswaRepository @Inject constructor(
     suspend fun insert (
         npm: String,
         nama: String,
-        tanggalLahir: Date,
-        jenisKelamin: JenisKelamin,
+        tanggal_lahir: Date,
+        jenis_kelamin: JenisKelamin,
         onSuccess: (Mahasiswa) -> Unit,
         onError: (Mahasiswa?, String) -> Unit
     ) {
         val id = uuid4().toString()
-        val item = Mahasiswa(id, npm, nama, tanggalLahir, jenisKelamin)
+        val item = Mahasiswa(id, npm, nama, tanggal_lahir, jenis_kelamin)
         dao.insertAllMahasiswa(item)
         api.addMahasiswa(item)
             .suspendOnSuccess {
@@ -67,12 +67,12 @@ class MahasiswaRepository @Inject constructor(
         id: String,
         npm: String,
         nama: String,
-        tanggalLahir: Date,
-        jenisKelamin: JenisKelamin,
+        tanggal_lahir: Date,
+        jenis_kelamin: JenisKelamin,
         onSuccess: (Mahasiswa) -> Unit,
         onError: (Mahasiswa?, String) -> Unit
     ) {
-        val item = Mahasiswa(id, npm, nama, tanggalLahir, jenisKelamin)
+        val item = Mahasiswa(id, npm, nama, tanggal_lahir, jenis_kelamin)
         dao.insertAllMahasiswa(item)
         api.updateMahasiswa(id, item)
             .suspendOnSuccess {
