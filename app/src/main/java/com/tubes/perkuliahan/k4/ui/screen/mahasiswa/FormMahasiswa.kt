@@ -1,6 +1,7 @@
 package com.tubes.perkuliahan.k4.ui.screen.mahasiswa
 
-import android.widget.RadioGroup
+import DateTextField
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -29,10 +31,18 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tubes.perkuliahan.k4.R
-import com.tubes.perkuliahan.k4.data.model.Pendidikan
+import com.tubes.perkuliahan.k4.model.JenisKelamin
 import com.tubes.perkuliahan.k4.ui.theme.*
 import com.tubes.perkuliahan.k4.ui.utils.standardQuadFromTo
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.*
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Modifier = Modifier){
@@ -41,9 +51,21 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
     val viewModel = hiltViewModel<MahasiswaViewModel>()
     var npm = remember { mutableStateOf(TextFieldValue("")) }
     var nama = remember { mutableStateOf(TextFieldValue("")) }
-    var tanggal_lahir = remember { mutableStateOf(TextFieldValue("")) }
+    var tanggal_lahir by remember {
+        mutableStateOf(LocalDate.now())
+    }
     var jenis_kelamin by remember { mutableStateOf(JenisKelamin.PEREMPUAN) }
     val scope = rememberCoroutineScope()
+    val dateDialogState = rememberMaterialDialogState()
+    val context = LocalContext.current
+
+    val formattedDate by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("MMM dd yyyy")
+                .format(tanggal_lahir)
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(15.dp)
@@ -52,7 +74,7 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
             modifier = Modifier
                 .aspectRatio(2.5f)
                 .clip(RoundedCornerShape(10.dp))
-                .background(BlueViolet3)
+                .background(Beige3)
                 .fillMaxWidth()
                 .clickable {   }
         ){
@@ -100,11 +122,11 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
             ) {
                 drawPath(
                     path = mediumColoredPath,
-                    color = BlueViolet2
+                    color = Beige2
                 )
                 drawPath(
                     path = lightColoredPath,
-                    color = BlueViolet1
+                    color = Beige1
                 )
             }
             Image(
@@ -147,32 +169,19 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
             }
             item {
                 OutlinedTextField(
-                    label = { Text(text = "Gelar Depan") },
-                    value = gelar_depan.value,
+                    label = { Text(text = "Tanggal Lahir") },
+                    value = formattedDate,
                     onValueChange = {
-                        gelar_depan.value = it
+
                     },
-                    modifier = Modifier.padding(4.dp).fillMaxWidth(),
+                    modifier = Modifier.padding(4.dp).fillMaxWidth().clickable {
+                        dateDialogState.show()
+                     },
                     keyboardOptions = KeyboardOptions(
                         capitalization =
                         KeyboardCapitalization.Characters, keyboardType = KeyboardType.Text
                     ),
-                    placeholder = { Text(text = "gelar depan") }
-                )
-            }
-            item {
-                OutlinedTextField(
-                    label = { Text(text = "Gelar Belakang") },
-                    value = gelar_belakang.value,
-                    onValueChange = {
-                        gelar_belakang.value = it
-                    },
-                    modifier = Modifier.padding(4.dp).fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        capitalization =
-                        KeyboardCapitalization.Characters, keyboardType = KeyboardType.Text
-                    ),
-                    placeholder = { Text(text = "gelar belakang") }
+                    placeholder = { Text(text = "pilih tanggal lahir mahasiswa") }
                 )
             }
             item {
@@ -188,7 +197,7 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                             viewModel.insert(
                                 npm.value.text,
                                 nama.value.text,
-                                tanggal_lahir.value.text,
+                                Date.from(tanggal_lahir.atStartOfDay(ZoneId.systemDefault()).toInstant()),
                                 jenis_kelamin,
                             )
                         }
@@ -198,8 +207,9 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                                 id,
                                 npm.value.text,
                                 nama.value.text,
-                                tanggal_lahir.value.text,
-                                jenis_kelamin)
+                                Date.from(tanggal_lahir.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                                jenis_kelamin
+                            )
                         }
                     }
                     navController.navigate("mahasiswa")
@@ -218,6 +228,29 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
         }
 
     }
+    MaterialDialog(
+        dialogState = dateDialogState,
+        buttons = {
+            positiveButton(text = "Ok") {
+                Toast.makeText(
+                    context,
+                    "Clicked ok",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            negativeButton(text = "Cancel")
+        }
+    ) {
+        datepicker(
+            initialDate = LocalDate.now(),
+            title = "Pick a date",
+            allowedDateValidator = {
+                it.dayOfMonth % 2 == 1
+            }
+        ) {
+            tanggal_lahir = it
+        }
+    }
 
     viewModel.isLoading.observe(LocalLifecycleOwner.current) {
         isLoading.value = it
@@ -227,10 +260,9 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
         LaunchedEffect(scope) {
             viewModel.loadItem(id) { mahasiswa ->
                 mahasiswa?.let {
-                    nidn.value = TextFieldValue(mahasiswa.nidn)
+                    npm.value = TextFieldValue(mahasiswa.npm)
                     nama.value = TextFieldValue(mahasiswa.nama)
-                    gelar_depan.value = TextFieldValue(mahasiswa.gelar_depan)
-                    gelar_belakang.value = TextFieldValue(mahasiswa.gelar_belakang)
+                    tanggal_lahir = mahasiswa.tanggal_lahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                     jenis_kelamin = mahasiswa.jenis_kelamin
                 }
             }
@@ -245,7 +277,7 @@ fun EnumRadioGroup(
     onValueSelected: (JenisKelamin) -> Unit
 ) {
     Row (modifier = Modifier.fillMaxWidth()) {
-        JenisKelamin.values().forEach { JenisKelamin ->
+        JenisKelamin.values().forEach { jenis_kelamin ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier

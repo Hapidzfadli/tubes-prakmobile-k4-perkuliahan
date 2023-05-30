@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.sp
 import com.tubes.perkuliahan.k4.R
 import com.tubes.perkuliahan.k4.ui.theme.*
 import com.tubes.perkuliahan.k4.ui.utils.standardQuadFromTo
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
@@ -48,6 +50,7 @@ fun MahasiswaScreen(navController : NavHostController, modifier: Modifier = Modi
     listOf())
     var id by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
 
     Column(modifier = modifier.fillMaxSize()){
         Row(
@@ -78,7 +81,7 @@ fun MahasiswaScreen(navController : NavHostController, modifier: Modifier = Modi
                         .padding(7.5.dp)
                         .aspectRatio(3.5f)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Beige1)
+                        .background(Beige3)
                         .fillMaxWidth()
                         .clickable {
                             navController.navigate("edit-mahasiswa/${item.id}")
@@ -132,7 +135,7 @@ fun MahasiswaScreen(navController : NavHostController, modifier: Modifier = Modi
                         )
                         drawPath(
                             path = lightColoredPath,
-                            color = Beige3
+                            color = Beige1
                         )
                     }
                     Row(modifier = Modifier.padding(15.dp)){
@@ -170,7 +173,7 @@ fun MahasiswaScreen(navController : NavHostController, modifier: Modifier = Modi
                                 ),
                             )
                             Text(
-                                text = item.tanggal_lahir.toString(),
+                                text = dateFormat.format(item.tanggal_lahir),
                                 style = TextStyle(
                                     color = TextBlack,
                                     fontFamily = poppins,
