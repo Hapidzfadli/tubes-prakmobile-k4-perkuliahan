@@ -1,28 +1,57 @@
 package com.tubes.perkuliahan.k4.ui.screen.matakuliah
 
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.tubes.perkuliahan.k4.model.MataKuliah
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.tubes.perkuliahan.k4.R
+import com.tubes.perkuliahan.k4.ui.theme.*
+import com.tubes.perkuliahan.k4.ui.utils.standardQuadFromTo
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
 fun MataKuliahScreen(navController : NavHostController, modifier: Modifier = Modifier){
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val mataKuliahViewModel = hiltViewModel<MataKuliahViewModel>()
-    val mataKuliahItems: List<MataKuliah> by mataKuliahViewModel.list.observeAsState(initial =
+    val matakuliahViewModel = hiltViewModel<MataKuliahViewModel>()
+    val matakuliahItems: List<MataKuliah> by matakuliahViewModel.list.observeAsState(initial =
     listOf())
+    var id by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
 
-     Column(modifier = modifier.fillMaxSize()){
+    Column(modifier = modifier.fillMaxSize()){
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -31,7 +60,7 @@ fun MataKuliahScreen(navController : NavHostController, modifier: Modifier = Mod
                 .padding(15.dp)
         ) {
             Text(
-                text = "Daftar Matakuliah",
+                text = "Daftar Mata Kuliah",
                 style = MaterialTheme.typography.h2
             )
             Image(
@@ -51,7 +80,7 @@ fun MataKuliahScreen(navController : NavHostController, modifier: Modifier = Mod
                         .padding(7.5.dp)
                         .aspectRatio(3.5f)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Beige1)
+                        .background(color = if (item.praktikum == 1) LightGreen3 else OrangeYellow1)
                         .fillMaxWidth()
                         .clickable {
                             navController.navigate("edit-matakuliah/${item.id}")
@@ -101,16 +130,17 @@ fun MataKuliahScreen(navController : NavHostController, modifier: Modifier = Mod
                     ) {
                         drawPath(
                             path = mediumColoredPath,
-                            color = Beige2
+                            color = if (item.praktikum == 1) LightGreen2 else OrangeYellow2
                         )
                         drawPath(
                             path = lightColoredPath,
-                            color = Beige3
+                            color = if (item.praktikum == 1) LightGreen1 else OrangeYellow3
                         )
                     }
                     Row(modifier = Modifier.padding(15.dp)){
+
                         Image(
-                            painter = painterResource(id = R.drawable.man), // Ganti dengan resource avatar Anda
+                            painter = painterResource(id = R.drawable.book), // Ganti dengan resource avatar Anda
                             contentDescription = "Avatar",
                             modifier = Modifier.size(64.dp)
                         )
@@ -134,16 +164,7 @@ fun MataKuliahScreen(navController : NavHostController, modifier: Modifier = Mod
                                 ),
                             )
                             Text(
-                                text = item.sks.toString(),
-                                style = TextStyle(
-                                    color = TextBlack,
-                                    fontFamily = poppins,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 12.sp
-                                ),
-                            )
-                            Text(
-                                text = item.praktikum.toString(),
+                                text = "${item.sks} sks",
                                 style = TextStyle(
                                     color = TextBlack,
                                     fontFamily = poppins,
@@ -246,15 +267,14 @@ fun MataKuliahScreen(navController : NavHostController, modifier: Modifier = Mod
         }
     }
 
-
     LaunchedEffect(scope) {
-        mataKuliahViewModel.loadItems()
+        matakuliahViewModel.loadItems()
     }
 
-    mataKuliahViewModel.success.observe(LocalLifecycleOwner.current) {
+    matakuliahViewModel.success.observe(LocalLifecycleOwner.current) {
         if (it) {
             scope.launch {
-                mataKuliahViewModel.loadItems()
+                matakuliahViewModel.loadItems()
             }
         }
     }

@@ -3,11 +3,9 @@ package com.tubes.perkuliahan.k4.ui.screen.mahasiswa
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tubes.perkuliahan.k4.model.JenisKelamin
 import com.tubes.perkuliahan.k4.model.Mahasiswa
 import com.tubes.perkuliahan.k4.repository.MahasiswaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,8 +37,8 @@ class MahasiswaViewModel @Inject constructor(
     suspend fun insert(
         npm: String,
         nama: String,
-        tanggalLahir: Date,
-        jenisKelamin: JenisKelamin,
+        tanggalLahir: String,
+        jenisKelamin: String,
     )
     {
         _isLoading.postValue(true)
@@ -63,8 +61,8 @@ class MahasiswaViewModel @Inject constructor(
         id: String,
         npm: String,
         nama: String,
-        tanggalLahir: Date,
-        jenisKelamin: JenisKelamin,
+        tanggalLahir: String,
+        jenisKelamin: String,
     )
     {
         _isLoading.postValue(true)

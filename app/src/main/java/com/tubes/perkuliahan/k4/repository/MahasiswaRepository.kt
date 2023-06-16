@@ -6,11 +6,9 @@ import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnException
 import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.whatif.whatIfNotNull
-import com.tubes.perkuliahan.k4.model.JenisKelamin
 import com.tubes.perkuliahan.k4.model.Mahasiswa
 import com.tubes.perkuliahan.k4.networks.MahasiswaApiService
 import com.tubes.perkuliahan.k4.persistance.PerkuliahanDao
-import java.util.*
 import javax.inject.Inject
 
 class MahasiswaRepository @Inject constructor(
@@ -43,8 +41,8 @@ class MahasiswaRepository @Inject constructor(
     suspend fun insert (
         npm: String,
         nama: String,
-        tanggal_lahir: Date,
-        jenis_kelamin: JenisKelamin,
+        tanggal_lahir: String,
+        jenis_kelamin: String,
         onSuccess: (Mahasiswa) -> Unit,
         onError: (Mahasiswa?, String) -> Unit
     ) {
@@ -67,8 +65,8 @@ class MahasiswaRepository @Inject constructor(
         id: String,
         npm: String,
         nama: String,
-        tanggal_lahir: Date,
-        jenis_kelamin: JenisKelamin,
+        tanggal_lahir: String,
+        jenis_kelamin: String,
         onSuccess: (Mahasiswa) -> Unit,
         onError: (Mahasiswa?, String) -> Unit
     ) {

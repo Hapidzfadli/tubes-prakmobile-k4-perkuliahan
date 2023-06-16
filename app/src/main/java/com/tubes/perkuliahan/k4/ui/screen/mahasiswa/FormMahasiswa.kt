@@ -1,6 +1,5 @@
 package com.tubes.perkuliahan.k4.ui.screen.mahasiswa
 
-import DateTextField
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -11,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,9 +40,9 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
-import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -51,21 +53,20 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
     val viewModel = hiltViewModel<MahasiswaViewModel>()
     var npm = remember { mutableStateOf(TextFieldValue("")) }
     var nama = remember { mutableStateOf(TextFieldValue("")) }
-    var tanggal_lahir by remember {
-        mutableStateOf(LocalDate.now())
-    }
-    var jenis_kelamin by remember { mutableStateOf(JenisKelamin.PEREMPUAN) }
+    var tanggal_lahir by remember { mutableStateOf("") }
+    var jenis_kelamin by remember { mutableStateOf(JenisKelamin.LAKI_LAKI) }
     val scope = rememberCoroutineScope()
     val dateDialogState = rememberMaterialDialogState()
     val context = LocalContext.current
 
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
     val formattedDate by remember {
         derivedStateOf {
-            DateTimeFormatter
-                .ofPattern("MMM dd yyyy")
-                .format(tanggal_lahir)
+            tanggal_lahir.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
         }
     }
+
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(15.dp)
@@ -129,11 +130,20 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                     color = Beige1
                 )
             }
-            Image(
-                painter = painterResource(id = R.drawable.man), // Ganti dengan resource avatar Anda
-                contentDescription = "Avatar",
-                modifier = Modifier.size(64.dp).align(Alignment.Center)
-            )
+            if(jenis_kelamin.value == "Perempuan") {
+                Image(
+                    painter = painterResource(id = R.drawable.woman), // Ganti dengan resource avatar Anda
+                    contentDescription = "Avatar",
+                    modifier = Modifier.size(64.dp).align(Alignment.Center)
+                )
+            } else if (jenis_kelamin.value == "Laki-laki"){
+                Image(
+                    painter = painterResource(id = R.drawable.man), // Ganti dengan resource avatar Anda
+                    contentDescription = "Avatar",
+                    modifier = Modifier.size(64.dp).align(Alignment.Center)
+                )
+            }
+
         }
         Divider(color = TextWhite, modifier = Modifier.padding(vertical = 15.dp))
         LazyColumn (modifier = Modifier.fillMaxSize(). padding(bottom = 60.dp)) {
@@ -168,21 +178,18 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                 )
             }
             item {
-                OutlinedTextField(
-                    label = { Text(text = "Tanggal Lahir") },
-                    value = formattedDate,
-                    onValueChange = {
-
-                    },
-                    modifier = Modifier.padding(4.dp).fillMaxWidth().clickable {
-                        dateDialogState.show()
-                     },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization =
-                        KeyboardCapitalization.Characters, keyboardType = KeyboardType.Text
-                    ),
-                    placeholder = { Text(text = "pilih tanggal lahir mahasiswa") }
-                )
+                Row(modifier = Modifier.padding(start = 8.dp, top = 15.dp).clickable {
+                    dateDialogState.show()
+                }) {
+                    Icon(
+                        Icons.Default.DateRange,
+                        contentDescription = "Date Icon",
+                        modifier = Modifier.size(24.dp),
+                        tint = AquaBlue,
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Text(text = formattedDate, modifier = Modifier.padding(start = 8.dp))
+                }
             }
             item {
                 EnumRadioGroup(
@@ -191,14 +198,16 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                 )
             }
             item {
+
+
                 Button(modifier = Modifier.padding(10.dp), onClick = {
                     if (id == null) {
                         scope.launch {
                             viewModel.insert(
                                 npm.value.text,
                                 nama.value.text,
-                                Date.from(tanggal_lahir.atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                                jenis_kelamin,
+                                tanggal_lahir,
+                                jenis_kelamin.value,
                             )
                         }
                     } else {
@@ -207,8 +216,8 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                                 id,
                                 npm.value.text,
                                 nama.value.text,
-                                Date.from(tanggal_lahir.atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                                jenis_kelamin
+                                tanggal_lahir,
+                                jenis_kelamin.value
                             )
                         }
                     }
@@ -244,11 +253,9 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
         datepicker(
             initialDate = LocalDate.now(),
             title = "Pick a date",
-            allowedDateValidator = {
-                it.dayOfMonth % 2 == 1
-            }
+
         ) {
-            tanggal_lahir = it
+            tanggal_lahir = it.format(formatter)
         }
     }
 
@@ -262,14 +269,18 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                 mahasiswa?.let {
                     npm.value = TextFieldValue(mahasiswa.npm)
                     nama.value = TextFieldValue(mahasiswa.nama)
-                    tanggal_lahir = mahasiswa.tanggal_lahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                    jenis_kelamin = mahasiswa.jenis_kelamin
+                    tanggal_lahir = mahasiswa.tanggal_lahir
+                    jenis_kelamin = JenisKelamin.valueOf(mahasiswa.jenis_kelamin.replace("-", "_").toUpperCase())
                 }
             }
         }
     }
 }
 
+fun formatDateToString(date: Date): String {
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    return dateFormat.format(date)
+}
 
 @Composable
 fun EnumRadioGroup(
