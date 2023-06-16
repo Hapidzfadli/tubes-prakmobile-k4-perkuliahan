@@ -40,6 +40,7 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 import java.time.ZoneId
@@ -52,21 +53,20 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
     val viewModel = hiltViewModel<MahasiswaViewModel>()
     var npm = remember { mutableStateOf(TextFieldValue("")) }
     var nama = remember { mutableStateOf(TextFieldValue("")) }
-    var tanggal_lahir by remember {
-        mutableStateOf(LocalDate.now())
-    }
+    var tanggal_lahir by remember { mutableStateOf("") }
     var jenis_kelamin by remember { mutableStateOf(JenisKelamin.LAKI_LAKI) }
     val scope = rememberCoroutineScope()
     val dateDialogState = rememberMaterialDialogState()
     val context = LocalContext.current
 
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
     val formattedDate by remember {
         derivedStateOf {
-            DateTimeFormatter
-                .ofPattern("MMM dd yyyy")
-                .format(tanggal_lahir)
+            tanggal_lahir.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
         }
     }
+
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(15.dp)
@@ -188,7 +188,7 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                         tint = AquaBlue,
                     )
                     Spacer(modifier = Modifier.width(15.dp))
-                    Text(text = formattedDate)
+                    Text(text = formattedDate, modifier = Modifier.padding(start = 8.dp))
                 }
             }
             item {
@@ -198,13 +198,15 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                 )
             }
             item {
+
+
                 Button(modifier = Modifier.padding(10.dp), onClick = {
                     if (id == null) {
                         scope.launch {
                             viewModel.insert(
                                 npm.value.text,
                                 nama.value.text,
-                                Date.from(tanggal_lahir.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                                tanggal_lahir,
                                 jenis_kelamin.value,
                             )
                         }
@@ -214,7 +216,7 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                                 id,
                                 npm.value.text,
                                 nama.value.text,
-                                Date.from(tanggal_lahir.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                                tanggal_lahir,
                                 jenis_kelamin.value
                             )
                         }
@@ -251,11 +253,9 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
         datepicker(
             initialDate = LocalDate.now(),
             title = "Pick a date",
-            allowedDateValidator = {
-                it.dayOfMonth % 2 == 1
-            }
+
         ) {
-            tanggal_lahir = it
+            tanggal_lahir = it.format(formatter)
         }
     }
 
@@ -269,7 +269,7 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
                 mahasiswa?.let {
                     npm.value = TextFieldValue(mahasiswa.npm)
                     nama.value = TextFieldValue(mahasiswa.nama)
-                    tanggal_lahir = mahasiswa.tanggal_lahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    tanggal_lahir = mahasiswa.tanggal_lahir
                     jenis_kelamin = JenisKelamin.valueOf(mahasiswa.jenis_kelamin.replace("-", "_").toUpperCase())
                 }
             }
@@ -277,6 +277,10 @@ fun FormMahasiswa(navController: NavController, id: String? = null, modifier: Mo
     }
 }
 
+fun formatDateToString(date: Date): String {
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    return dateFormat.format(date)
+}
 
 @Composable
 fun EnumRadioGroup(

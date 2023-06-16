@@ -1,9 +1,7 @@
 package com.tubes.perkuliahan.k4.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
 import java.util.Date
 
 @Entity
@@ -11,7 +9,7 @@ data class Mahasiswa(
     @PrimaryKey val id: String,
     val npm: String,
     val nama: String,
-    val tanggal_lahir: Date ,
+    var tanggal_lahir: String,
     val jenis_kelamin: String,
 )
 

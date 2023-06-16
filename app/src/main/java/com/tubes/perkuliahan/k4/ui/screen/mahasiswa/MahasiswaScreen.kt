@@ -182,7 +182,7 @@ fun MahasiswaScreen(navController : NavHostController, modifier: Modifier = Modi
                                 ),
                             )
                             Text(
-                                text = dateFormat.format(item.tanggal_lahir),
+                                text = item.tanggal_lahir,
                                 style = TextStyle(
                                     color = TextBlack,
                                     fontFamily = poppins,
